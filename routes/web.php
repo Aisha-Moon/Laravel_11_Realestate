@@ -33,6 +33,8 @@ Route::get('admin/email/compose',[EmailController::class,'email_compose']);
 Route::post('admin/email/compose_post',[EmailController::class,'email_compose_post']);
 Route::get('admin/email/sent',[EmailController::class,'sent_email']);
 Route::get('admin/email_sent',[EmailController::class,'admin_delete_sent_email']);
+Route::get('admin/email/read/{id}',[EmailController::class,'admin_read_email']);
+Route::get('admin/email/read_delete/{id}',[EmailController::class,'admin_read_delete']);
 });
 
 Route::middleware('auth','role:agent')->group(function () {

@@ -2,7 +2,7 @@
 @section('admin')
 <div class="page-content">
     @include('profile._message')
-        
+
     <div class="row inbox-wrapper">
       <div class="col-lg-12">
         <div class="card">
@@ -72,14 +72,14 @@
                     </li>
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center" href="#">
-                      <i data-feather="tag" class="text-primary icon-lg me-2"></i> 
-                      Business 
+                      <i data-feather="tag" class="text-primary icon-lg me-2"></i>
+                      Business
                     </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link d-flex align-items-center" href="#">
-                        <i data-feather="tag" class="text-info icon-lg me-2"></i> 
-                        Inspiration 
+                        <i data-feather="tag" class="text-info icon-lg me-2"></i>
+                        Inspiration
                       </a>
                     </li>
                   </ul>
@@ -150,7 +150,7 @@
                       </div>
                       <a class="favorite" href="javascript:;"><span><i data-feather="star"></i></span></a>
                     </div>
-                    <a href="./read.html" class="email-list-detail">
+                    <a href="{{ url('admin/email/read/'.$email->id) }}" class="email-list-detail">
                       <div class="content">
                         <span class="from">{{ $email->subject }}</span>
                         <p class="msg">{{ $email->description }}</p>
@@ -161,19 +161,19 @@
                     </a>
                   </div>
                   @endforeach
-            
+
 
                 </div>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>
     </div>
 
         </div>
-    
+
 @endsection
 @section('script')
 <script type="text/javascript">
