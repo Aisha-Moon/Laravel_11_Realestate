@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\ResetPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AddUserMail;
 
 class AdminController extends Controller
 {
@@ -71,7 +73,7 @@ class AdminController extends Controller
     }
 
     public function admin_users(Request $request){
-        $data['getRecord']=User::getRecord();
+        $data['getRecord']=User::getRecord($request);
         return view('admin.users.list',$data);
     }
     public function admin_users_view($id){
@@ -79,4 +81,58 @@ class AdminController extends Controller
         return view('admin.users.view',$data);
 
     }
+
+    //add user
+    public function admin_users_create(Request $request){
+        return view('admin.users.add');
+
+    }
+    public function admin_users_store(Request $request){
+
+        $user=$request->validate([
+            'name'=>'required',
+            'email'=>'required|unique:users',
+            'status'=>'required',
+            'role'=>'required',
+        ]);
+
+        $user=new User();
+        $user->name=trim($request->name);
+        $user->username=trim($request->username);
+        $user->email=trim($request->email);
+        $user->phone=trim($request->phone);
+        $user->role=trim($request->role);
+        $user->status=trim($request->status);
+        $user->remember_token=Str::random(50);
+        $user->save();
+
+        Mail::to($user->email)->send(new AddUserMail($user)); //RegisterMail
+
+        return redirect('admin/users')->with('success', 'User Added Successfully');
+    }
+
+    public function set_new_password($token){
+
+        $data['token']=$token;
+        return view('auth.reset_pass',$data);
+    }
+    public function set_new_password_post($token, ResetPassword $request)
+{
+    // Find the user by the token
+    $user = User::where('remember_token', $token)->first();
+
+    // Check if the user exists
+    if (!$user) {
+        abort(404);
+    }
+
+    // Update the user's password and status
+    $user->password = Hash::make($request->password);
+    $user->status = 'active';
+    $user->save();
+
+    // Redirect to login with success message
+    return redirect('admin/login')->with('success', 'Password has been reset successfully');
+}
+
 }

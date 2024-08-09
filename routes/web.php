@@ -27,7 +27,7 @@ Route::get('admin/dashboard',[AdminController::class,'adminDashboard'])->name('a
 Route::get('admin/logout',[AdminController::class,'adminLogout'])->name('admin.logout');
 Route::get('admin/profile',[AdminController::class,'adminProfile']);
 Route::post('admin_profile/update',[AdminController::class,'adminProfileUpdate']);
-Route::get('admin/users',[AdminController::class,'admin_users']);
+Route::get('admin/users/',[AdminController::class,'admin_users']);
 Route::get('admin/users/view/{id}',[AdminController::class,'admin_users_view']);
 Route::get('admin/email/compose',[EmailController::class,'email_compose']);
 Route::post('admin/email/compose_post',[EmailController::class,'email_compose_post']);
@@ -35,6 +35,9 @@ Route::get('admin/email/sent',[EmailController::class,'sent_email']);
 Route::get('admin/email_sent',[EmailController::class,'admin_delete_sent_email']);
 Route::get('admin/email/read/{id}',[EmailController::class,'admin_read_email']);
 Route::get('admin/email/read_delete/{id}',[EmailController::class,'admin_read_delete']);
+
+Route::get('admin/users/create',[AdminController::class,'admin_users_create'])->name('admin.users.create');
+Route::post('admin/users/create',[AdminController::class,'admin_users_store'])->name('admin.users.store');
 });
 
 Route::middleware('auth','role:agent')->group(function () {
@@ -42,4 +45,6 @@ Route::middleware('auth','role:agent')->group(function () {
 Route::get('agent/dashboard',[AgentController::class,'agentDashboard'])->name('agent.dashboard');
 });
 Route::get('admin/login',[AdminController::class,'adminLogin'])->name('admin.login');
+Route::get('set_new_password/{token}',[AdminController::class,'set_new_password']);
+Route::post('set_new_password/{token}',[AdminController::class,'set_new_password_post']);
 

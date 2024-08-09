@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -41,11 +42,38 @@ class User extends Authenticatable
         ];
     }
 
-    static public function getRecord(){
-        $query = User::select('users.*')
-                     ->orderBy('id', 'asc')
-                     ->paginate(10); // Paginate results with 10 items per page
-        return $query;
+    static public function getRecord($request){
+        $return = User::select('users.*')
+                     ->orderBy('id', 'asc');
+                     //search starts
+
+                     if(!empty(Request::get('id'))){
+                         $return = $return->where('users.id', Request::get('id'));
+                     }
+                     if(!empty(Request::get('name'))){
+                         $return = $return->where('users.name', 'like', '%'.Request::get('name').'%');
+                     }
+                     if(!empty(Request::get('username'))){
+                         $return = $return->where('users.username', 'like', '%'.Request::get('username').'%');
+                     }
+                     if(!empty(Request::get('email'))){
+                         $return = $return->where('users.email', 'like', '%'.Request::get('email').'%');
+                     }
+                     if(!empty(Request::get('phone'))){
+                         $return = $return->where('users.phone', 'like', '%'.Request::get('phone').'%');
+                     }
+                     if(!empty(Request::get('website'))){
+                         $return = $return->where('users.website', 'like', '%'.Request::get('website').'%');
+                     }
+                     if(!empty(Request::get('status'))){
+                         $return = $return->where('users.status', Request::get('status'));
+                     }
+                     if(!empty(Request::get('role'))){
+                         $return = $return->where('users.role', Request::get('role'));
+                     }
+                     //search ends
+         $return=$return->paginate(10); // Paginate results with 10 items per page
+         return $return;
     }
 
 
