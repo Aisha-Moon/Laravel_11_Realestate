@@ -163,6 +163,10 @@
                             </td>
                             <td>{{ date('d-m-Y',strtotime($user->created_at)) }}</td>
                             <td> <a class="dropdown-item d-flex align-items-center" href="{{ url('admin/users/view/'.$user->id) }}"><i data-feather="eye" class="icon-sm me-2"></i> <span class="">View</span></a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ url('admin/users/edit/'.$user->id) }}"><i data-feather="edit-2" class="icon-sm me-2"></i> <span class="">Edit</span></a>
+                                <a class="dropdown-item d-flex align-items-center"  href="{{ url('admin/users/delete/'.$user->id) }}" onclick="return confirm('Are you sure  want to delete this?')"><i data-feather="trash" class="icon-sm me-2"></i> <span class="">Delete</span></a>
+
+
                             </td>
                         </tr>
                           @empty

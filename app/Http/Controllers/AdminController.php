@@ -135,4 +135,29 @@ class AdminController extends Controller
     return redirect('admin/login')->with('success', 'Password has been reset successfully');
 }
 
+public function admin_users_edit($id){
+    $data['user'] = User::find($id);
+    return view('admin.users.edit',$data);
+}
+public function admin_users_update($id,Request $request){
+
+    $user=User::find($id);
+    $user->name=trim($request->name);
+    $user->username=trim($request->username);
+    $user->email=trim($request->email);
+    $user->phone=trim($request->phone);
+    $user->role=trim($request->role);
+    $user->status=trim($request->status);
+    $user->save();
+    return redirect('admin/users')->with('success', 'User Updated Successfully');
+}
+
+public function admin_users_delete($id,Request $request){
+    $softDelete=User::find($id);
+    $softDelete->is_delete=1;
+    $softDelete->save();
+
+    return redirect('admin/users')->with('success', 'User Deleted Successfully');
+}
+
 }
